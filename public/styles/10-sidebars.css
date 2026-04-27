@@ -1,0 +1,529 @@
+.eh-cockpit-grid {
+  display: grid;
+  grid-template-columns: 220px minmax(400px, 1fr) 240px;
+  gap: 6px;
+  min-height: 0;
+}
+
+.eh-sidebar {
+  display: grid;
+  gap: 4px;
+  min-height: 0;
+}
+
+.eh-sidebar--left {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+/* Guide panel collapsed by default — click h2 to expand */
+.eh-guide-panel {
+  max-height: 32px;
+  transition: max-height 300ms ease;
+  cursor: pointer;
+}
+
+.eh-guide-panel.expanded {
+  max-height: 400px;
+}
+
+.eh-guide-panel h2::after {
+  content: "▸";
+  float: right;
+  color: var(--cyan);
+  font-size: 10px;
+  transition: transform 200ms ease;
+}
+
+.eh-guide-panel.expanded h2::after {
+  transform: rotate(90deg);
+}
+
+.eh-guide-panel:not(.expanded) .eh-guide-list {
+  display: none;
+}
+
+.eh-sidebar--right {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.eh-guide-panel,
+.eh-progress-panel,
+.eh-evidence-panel,
+.eh-suspects-panel,
+.eh-warning-panel,
+.eh-map-panel {
+  padding: 6px 8px;
+}
+
+.eh-guide-panel h2,
+.eh-progress-panel h2,
+.eh-evidence-panel h2,
+.eh-suspects-panel h2,
+.eh-map-header h2 {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.eh-guide-list {
+  display: grid;
+  gap: 0;
+  margin: 6px -10px -8px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-muted);
+}
+
+.eh-guide-list li {
+  display: grid;
+  grid-template-columns: 24px 20px 1fr;
+  gap: 6px;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 10px;
+  border-bottom: 1px solid rgba(164, 218, 232, 0.11);
+}
+
+.eh-guide-list b {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.eh-guide-list span:last-child {
+  color: #c4d3db;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.eh-guide-icon,
+.eh-guide-svg {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  color: var(--cyan);
+  filter: drop-shadow(0 0 14px rgba(40, 232, 242, 0.6));
+  flex-shrink: 0;
+}
+
+/* Suspect play button pulse animation */
+.eh-suspect-play.playing {
+  animation: playPulse 0.8s ease-in-out infinite;
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 14px rgba(40, 232, 242, 0.35);
+}
+
+@keyframes playPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(40, 232, 242, 0.2); }
+  50% { box-shadow: 0 0 18px rgba(40, 232, 242, 0.5); }
+}
+
+.eh-guide-icon::before,
+.eh-guide-icon::after {
+  content: "";
+  position: absolute;
+}
+
+.eh-guide-icon--voice::before {
+  inset: 6px 5px;
+  background:
+    repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 6px);
+  mask-image: linear-gradient(to right, transparent 0%, currentColor 20%, currentColor 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, currentColor 20%, currentColor 80%, transparent 100%);
+}
+
+.eh-guide-icon--voice::after {
+  left: 2px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 22px 0 0 currentColor;
+}
+
+/* Crew icon — 3 people group: top person + 2 below */
+.eh-guide-icon--crew::before {
+  width: 7px;
+  height: 7px;
+  left: 12px;
+  top: 2px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: -9px 9px 0 0 currentColor, 9px 9px 0 0 currentColor;
+}
+
+.eh-guide-icon--crew::after {
+  left: 4px;
+  top: 18px;
+  width: 22px;
+  height: 2px;
+  border: 0;
+  border-radius: 1px;
+  background: currentColor;
+  box-shadow:
+    2px -6px 0 0 currentColor,
+    20px -6px 0 0 currentColor,
+    11px -14px 0 0 currentColor;
+  opacity: 0.6;
+}
+
+/* Links icon — 3 connected nodes in triangle */
+.eh-guide-icon--links::before {
+  left: 50%;
+  top: 3px;
+  width: 7px;
+  height: 7px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 0;
+  background: currentColor;
+  box-shadow: -9px 15px 0 currentColor, 9px 15px 0 currentColor;
+}
+
+.eh-guide-icon--links::after {
+  left: 8px;
+  top: 7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: none;
+  border: 1.5px solid currentColor;
+  border-top: 0;
+  opacity: 0.45;
+  box-shadow: none;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* Target icon — crosshair with circle and center dot */
+.eh-guide-icon--target::before {
+  inset: 4px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.eh-guide-icon--target::after {
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 -12px 0 -1px currentColor,
+    0 12px 0 -1px currentColor,
+    -12px 0 0 -1px currentColor,
+    12px 0 0 -1px currentColor;
+}
+
+.eh-progress-panel {
+  display: grid;
+  gap: 6px;
+}
+
+.eh-progress-row {
+  display: grid;
+  gap: 2px;
+}
+
+.eh-progress-row > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.eh-progress-row strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.eh-progress-track {
+  position: relative;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: 0;
+}
+
+/* Thin baseline connecting all dots */
+.eh-progress-track::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: rgba(60, 120, 140, 0.45);
+  border-radius: 1px;
+  z-index: 0;
+}
+
+/* No pseudo ::after needed */
+.eh-progress-track::after {
+  display: none;
+}
+
+/* Milestone dot — hollow circle with transparent center */
+.eh-progress-track .eh-dot {
+  position: relative;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(80, 145, 160, 0.65);
+  background: rgba(3, 18, 27, 0.9);
+  flex-shrink: 0;
+}
+
+/* Fill bar */
+.eh-progress-track i {
+  display: block;
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0%;
+  max-width: calc(100% - 8px);
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--cyan), #5bffd4);
+  box-shadow: 0 0 12px rgba(40, 232, 242, 0.5);
+  z-index: 1;
+  transition: width 160ms ease;
+}
+
+.eh-evidence-panel {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.eh-evidence-panel h2 {
+  font-family: Orbitron, var(--font);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eh-evidence-list,
+.eh-suspect-list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 3px;
+  margin-top: 4px;
+  min-height: 0;
+  align-content: start;
+}
+
+.eh-evidence-list {
+  max-height: none;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.eh-evidence-list::-webkit-scrollbar { width: 2px; }
+.eh-evidence-list::-webkit-scrollbar-track { background: transparent; }
+.eh-evidence-list::-webkit-scrollbar-thumb {
+  background: rgba(40, 232, 242, 0.25);
+  border-radius: 2px;
+}
+
+.eh-empty-state {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   EVIDENCE ITEM — compact card, no icon column
+   ============================================================ */
+.eh-evidence-item {
+  position: relative;
+  padding: 4px 5px;
+  border: 1px solid rgba(40, 232, 242, 0.16);
+  border-left: 2px solid rgba(40, 232, 242, 0.55);
+  border-radius: 3px;
+  background: rgba(6, 28, 40, 0.8);
+  color: #c8dce6;
+  font-size: 10px;
+  line-height: 1.3;
+  animation: evSlideIn 200ms ease-out both;
+  transition: border-color 150ms ease;
+}
+
+.eh-evidence-item:hover {
+  border-color: rgba(40, 232, 242, 0.35);
+}
+
+/* Scanline overlay */
+.eh-evidence-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.012) 0 1px,
+    transparent 1px 3px
+  );
+  border-radius: 3px;
+}
+
+@keyframes evSlideIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ============================================================
+   TYPE VARIANTS — left border color only
+   ============================================================ */
+.eh-ev--interrogation { border-left-color: var(--cyan); }
+.eh-ev--task          { border-left-color: var(--green); }
+.eh-ev--accusation    { border-left-color: var(--red); }
+.eh-ev--system        { border-left-color: rgba(139, 165, 179, 0.4); opacity: 0.8; }
+.eh-ev--conversation  { border-left-color: var(--purple); }
+
+/* ============================================================
+   EVIDENCE BODY — all text, no icon column
+   ============================================================ */
+.eh-ev-body {
+  min-width: 0;
+}
+
+.eh-evidence-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.eh-evidence-head strong {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.eh-evidence-head time {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.eh-ev-body p {
+  margin: 2px 0 0;
+  color: #a0b8c4;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.eh-ev--interrogation .eh-evidence-head strong { color: var(--ev-crew, var(--cyan)); }
+.eh-ev--conversation .eh-evidence-head strong  { color: var(--ev-crew, var(--purple)); }
+
+/* ============================================================
+   INLINE ICON — small dot before title, not a grid column
+   ============================================================ */
+.eh-ev-icon {
+  display: none;
+}
+
+/* ============================================================
+   EVIDENCE PLAY BUTTON — cyber hex style
+   ============================================================ */
+.eh-evidence-play {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(40, 232, 242, 0.35);
+  border-radius: 0;
+  background: rgba(40, 232, 242, 0.06);
+  clip-path: polygon(30% 0%, 100% 0%, 100% 70%, 70% 100%, 0% 100%, 0% 30%);
+  cursor: pointer;
+  z-index: 2;
+  transition: background 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.eh-evidence-play::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid var(--cyan);
+  filter: drop-shadow(0 0 3px var(--cyan));
+}
+
+.eh-evidence-play:hover:not(:disabled) {
+  background: rgba(40, 232, 242, 0.15);
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(40, 232, 242, 0.3), inset 0 0 8px rgba(40, 232, 242, 0.1);
+}
+
+.eh-evidence-play:disabled { opacity: 0.2; }
+
+.eh-evidence-play.playing {
+  animation: playPulse 0.8s ease-in-out infinite;
+  border-color: var(--cyan);
+  background: rgba(40, 232, 242, 0.18);
+}
+
+/* Items with play button get right padding */
+.eh-evidence-item:has(.eh-evidence-play) {
+  padding-right: 28px;
+}
+
+/* ============================================================
+   LOCKED HINT — subtle, compact
+   ============================================================ */
+.eh-ev-locked-hint {
+  padding: 4px 5px;
+  border: 1px dashed rgba(139, 165, 179, 0.15);
+  border-radius: 3px;
+  background: rgba(6, 14, 20, 0.5);
+  opacity: 0.5;
+  animation: evLockedPulse 3s ease-in-out infinite;
+}
+
+.eh-ev-locked-hint strong {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+.eh-ev-locked-hint p {
+  margin: 1px 0 0;
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 1.2;
+}
+
+.eh-ev-locked-hint .eh-ev-icon { display: none; }
+
+@keyframes evLockedPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.6; }
+}

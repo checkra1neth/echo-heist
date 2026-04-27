@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+
+# Agents / Skills (Kiro)
+.agents/
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
+
+# Lock file (skills)
+skills-lock.json

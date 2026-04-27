@@ -1,0 +1,197 @@
+/* ── Command bar ─────────────────────────────────────────── */
+
+.eh-command-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  min-height: 42px;
+  padding-top: 2px;
+}
+
+.eh-command-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px 6px;
+  border: 1px solid rgba(40, 232, 242, 0.14);
+  border-radius: 6px;
+  background: rgba(2, 10, 16, 0.78);
+}
+
+.eh-command-group--primary {
+  flex: 1 1 auto;
+  justify-content: center;
+  gap: 10px;
+}
+
+.eh-command-group--utility,
+.eh-command-group--seed {
+  flex: 0 0 auto;
+}
+
+/* ── Buttons (shared) ───────────────────────────────────── */
+
+.eh-primary,
+.eh-secondary,
+.eh-danger {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 140ms ease, filter 140ms ease, background 140ms ease;
+}
+
+/* ── Primary (Допросить) ────────────────────────────────── */
+
+.eh-primary {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  border: 1px solid rgba(40, 232, 242, 0.8);
+  color: var(--cyan-strong);
+  background:
+    linear-gradient(90deg, rgba(40, 232, 242, 0.24), rgba(40, 232, 242, 0.05)),
+    rgba(2, 28, 37, 0.96);
+  box-shadow: 0 0 22px rgba(40, 232, 242, 0.18), inset 0 0 14px rgba(40, 232, 242, 0.08);
+}
+
+/* ── Danger (Обвинить) ──────────────────────────────────── */
+
+.eh-danger {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  border: 1px solid rgba(255, 72, 72, 0.8);
+  color: #ff6969;
+  background:
+    linear-gradient(90deg, rgba(255, 72, 72, 0.24), rgba(255, 72, 72, 0.06)),
+    rgba(37, 7, 8, 0.96);
+  box-shadow: 0 0 22px rgba(255, 72, 72, 0.18), inset 0 0 14px rgba(255, 72, 72, 0.08);
+}
+
+/* ── Secondary (all small buttons) ──────────────────────── */
+
+.eh-secondary {
+  padding: 0 12px;
+  border: 1px solid rgba(116, 196, 220, 0.28);
+  color: #bdd3dc;
+  background: rgba(7, 25, 35, 0.9);
+}
+
+/* ── Hover / active ─────────────────────────────────────── */
+
+.eh-primary:hover,
+.eh-danger:hover,
+.eh-secondary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+}
+
+.eh-primary:active,
+.eh-danger:active,
+.eh-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ── Button icons ───────────────────────────────────────── */
+
+.eh-btn-icon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+.eh-btn-icon--voice {
+  background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 5px);
+}
+
+.eh-btn-icon--chat {
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.eh-btn-icon--chat::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  bottom: -5px;
+  width: 6px;
+  height: 6px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: skew(-18deg);
+}
+
+.eh-btn-icon--target {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.eh-btn-icon--target::before,
+.eh-btn-icon--target::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+
+.eh-btn-icon--target::before {
+  left: 7px;
+  top: -5px;
+  width: 2px;
+  height: 26px;
+}
+
+.eh-btn-icon--target::after {
+  top: 7px;
+  left: -5px;
+  width: 26px;
+  height: 2px;
+}
+
+/* ── Keycap badge ───────────────────────────────────────── */
+
+.eh-keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border: 1px solid rgba(116, 196, 220, 0.35);
+  border-radius: 3px;
+  background: rgba(10, 30, 45, 0.7);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  color: #8fa5bd;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+/* ── Gear icon ──────────────────────────────────────────── */
+
+.eh-btn-icon--gear {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.eh-btn-icon--gear::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 6px;
+  height: 6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}

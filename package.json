@@ -1,0 +1,33 @@
+{
+  "name": "echo-heist",
+  "version": "1.0.0",
+  "description": "A short stealth browser game where ElevenLabs-generated voices, music, and sound effects become the core gameplay mechanic.",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node --env-file=.env server.mjs",
+    "dev": "node --env-file=.env --watch server.mjs"
+  },
+  "keywords": [
+    "elevenlabs",
+    "zed",
+    "hackathon",
+    "game",
+    "stealth",
+    "canvas",
+    "tts",
+    "music",
+    "sound-effects"
+  ],
+  "author": "checkra1neth",
+  "license": "MIT",
+  "dependencies": {
+    "@elevenlabs/elevenlabs-js": "^2.43.0",
+    "express": "^5.2.1",
+    "pixi-filters": "6.1.1",
+    "pixi.js": "^8.18.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

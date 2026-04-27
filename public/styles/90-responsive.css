@@ -1,0 +1,68 @@
+@media (max-width: 1280px) {
+  .eh-topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .eh-cockpit-grid {
+    grid-template-columns: 220px minmax(400px, 1fr);
+  }
+
+  .eh-sidebar--right {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+
+  .eh-suspect-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: none;
+  }
+
+  .eh-command-bar {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 900px) {
+  .eh-shell {
+    width: min(100vw - 16px, 680px);
+    padding-top: 8px;
+  }
+
+  .eh-telemetry-strip,
+  .eh-cockpit-grid,
+  .eh-sidebar--right {
+    grid-template-columns: 1fr;
+  }
+
+  .eh-brand-panel h1 {
+    font-size: 20px;
+  }
+
+  .eh-brand-panel {
+    min-height: 0;
+    padding: 8px;
+  }
+
+  .eh-map-header,
+  .eh-map-footer,
+  .eh-command-group,
+  .eh-command-group--primary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .eh-map-legend {
+    gap: 6px;
+  }
+
+  .eh-suspect-list {
+    grid-template-columns: 1fr;
+  }
+
+  .eh-primary,
+  .eh-danger,
+  .eh-secondary {
+    width: 100%;
+    min-width: 0;
+  }
+}

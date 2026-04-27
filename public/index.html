@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta name="theme-color" content="#02070c" />
+        <meta name="description" content="Echo Impostor is a procedural impostor-style stealth game where crew characters can be voiced with ElevenLabs." />
+        <title>Echo Impostor — AI Voiced Social Stealth Game</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="style.css" />
+        <script type="importmap">
+        {
+            "imports": {
+                "pixi.js": "/pixi.js/pixi.mjs"
+            }
+        }
+        </script>
+    </head>
+    <body>
+        <main id="app" class="eh-shell">
+            <header class="eh-topbar" aria-labelledby="game-title">
+                <section class="eh-brand-panel eh-panel">
+                    <div class="eh-wave-mark" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <div>
+                        <h1 id="game-title">Echo Impostor</h1>
+                        <p class="eh-subtitle">Listen. Compare. Accuse.</p>
+                    </div>
+                </section>
+
+                <section class="eh-telemetry-strip" aria-label="Mission dashboard">
+                    <div class="eh-panel eh-telemetry eh-telemetry--objective">
+                        <span class="eh-label">Objective</span>
+                        <strong id="objective">Collect 3 clues, interrogate suspects and accuse the impostor.</strong>
+                    </div>
+                    <div class="eh-panel eh-telemetry">
+                        <span class="eh-label">Noise level</span>
+                        <div class="eh-noise-row">
+                            <span class="eh-speaker" aria-hidden="true"></span>
+                            <div class="eh-meter" aria-label="Noise meter"><i id="noise-fill"></i></div>
+                            <strong id="noise-readout">Quiet</strong>
+                        </div>
+                    </div>
+                    <div class="eh-panel eh-telemetry eh-telemetry--status">
+                        <span class="eh-label">Status</span>
+                        <div class="eh-status-row">
+                            <span class="eh-status-orb" aria-hidden="true"></span>
+                            <strong id="status">Ready</strong>
+                            <time id="mission-clock">0:00</time>
+                        </div>
+                    </div>
+                </section>
+            </header>
+
+            <section class="eh-cockpit-grid" aria-label="Echo Impostor interface">
+                <aside class="eh-sidebar eh-sidebar--left">
+                    <section class="eh-panel eh-guide-panel" aria-label="How to play">
+                        <h2>How to play</h2>
+                        <ol class="eh-guide-list">
+                            <li>
+                                <svg class="eh-guide-svg" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                                    <circle cx="4" cy="15" r="2" fill="currentColor"/>
+                                    <circle cx="26" cy="15" r="2" fill="currentColor"/>
+                                    <rect x="8" y="7" width="2.5" height="16" rx="1" fill="currentColor"/>
+                                    <rect x="12" y="4" width="2.5" height="22" rx="1" fill="currentColor"/>
+                                    <rect x="16" y="9" width="2.5" height="12" rx="1" fill="currentColor"/>
+                                    <rect x="20" y="6" width="2.5" height="18" rx="1" fill="currentColor"/>
+                                </svg>
+                                <b>1</b>
+                                <span>Listen to surrounding voices and collect evidence.</span>
+                            </li>
+                            <li>
+                                <svg class="eh-guide-svg" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                                    <circle cx="15" cy="5" r="3.5" fill="currentColor"/>
+                                    <circle cx="5" cy="13" r="3" fill="currentColor"/>
+                                    <circle cx="25" cy="13" r="3" fill="currentColor"/>
+                                    <path d="M15 9 L5 16 M15 9 L25 16 M5 16 L25 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <b>2</b>
+                                <span>Interrogate suspects and compare their answers.</span>
+                            </li>
+                            <li>
+                                <svg class="eh-guide-svg" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                                    <circle cx="15" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="5" cy="22" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="25" cy="22" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                    <line x1="13" y1="8" x2="7" y2="19" stroke="currentColor" stroke-width="1.5"/>
+                                    <line x1="17" y1="8" x2="23" y2="19" stroke="currentColor" stroke-width="1.5"/>
+                                    <line x1="8" y1="22" x2="22" y2="22" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                                <b>3</b>
+                                <span>Cross-reference lines, rooms and behavior.</span>
+                            </li>
+                            <li>
+                                <svg class="eh-guide-svg" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                                    <circle cx="15" cy="15" r="9" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="15" cy="15" r="2" fill="currentColor"/>
+                                    <line x1="15" y1="1" x2="15" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="15" y1="25" x2="15" y2="29" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="1" y1="15" x2="5" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="25" y1="15" x2="29" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <b>4</b>
+                                <span>Accuse the one pretending to be human.</span>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <section class="eh-panel eh-progress-panel" aria-label="Progress">
+                        <h2>Progress</h2>
+                        <div class="eh-progress-row">
+                            <div>
+                                <span>Evidence</span>
+                                <strong id="task-count">0 / 3</strong>
+                            </div>
+                            <div class="eh-progress-track">
+                                <i id="task-progress-fill"></i>
+                                <span class="eh-dot"></span>
+                                <span class="eh-dot"></span>
+                                <span class="eh-dot"></span>
+                            </div>
+                        </div>
+                        <div class="eh-progress-row">
+                            <div>
+                                <span>Interrogations</span>
+                                <strong id="talk-count">0 / 5</strong>
+                            </div>
+                            <div class="eh-progress-track">
+                                <i id="talk-progress-fill"></i>
+                                <span class="eh-dot"></span>
+                                <span class="eh-dot"></span>
+                                <span class="eh-dot"></span>
+                                <span class="eh-dot"></span>
+                                <span class="eh-dot"></span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="eh-panel eh-evidence-panel" aria-label="Evidence log">
+                        <h2>Evidence log</h2>
+                        <div id="evidence-list" class="eh-evidence-list">
+                            <div class="eh-empty-state">Complete a task or interrogate crew to unlock the first entry.</div>
+                        </div>
+                    </section>
+                </aside>
+
+                <section class="eh-map-column">
+                    <section class="eh-panel eh-map-panel" aria-label="Ship map">
+                        <header class="eh-map-header">
+                            <h2>Ship map</h2>
+                            <div class="eh-map-legend" aria-label="Map legend">
+                                <span><i class="eh-dot eh-dot--you"></i>You</span>
+                                <span><i class="eh-dot eh-dot--task"></i>Task</span>
+                                <span><i class="eh-dot eh-dot--hide"></i>Hideout</span>
+                                <span><i class="eh-dot eh-dot--vent"></i>Vent</span>
+                            </div>
+                        </header>
+                        <div class="eh-map-tools" aria-hidden="true">
+                            <span>1</span>
+                            <strong>Deck 1</strong>
+                        </div>
+                        <div class="eh-canvas-frame">
+                            <canvas id="game-canvas" data-echo-heist="true" width="960" height="640"
+                                aria-label="Echo Impostor playable procedural social stealth game canvas"></canvas>
+                            <div id="overlay" class="eh-overlay">
+                                <div>
+                                    <h2>Echo Impostor</h2>
+                                    <p>Every run generates a new ship. Collect evidence, interrogate AI-voiced crew and press Q near a suspect.</p>
+                                    <button id="start-btn" class="eh-primary" type="button">Start ship</button>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="eh-map-footer">
+                            <span>Click a room for details</span>
+                        </footer>
+                    </section>
+                </section>
+
+                <aside class="eh-sidebar eh-sidebar--right">
+                    <section class="eh-panel eh-suspects-panel" aria-label="Suspects">
+                        <h2>Suspects</h2>
+                        <div id="suspect-list" class="eh-suspect-list">
+                            <div class="eh-empty-state">Start a ship to open the crew manifest.</div>
+                        </div>
+                    </section>
+
+                    <section class="eh-panel eh-warning-panel" aria-label="Warning">
+                        <div class="eh-warning-sigil" aria-hidden="true"></div>
+                        <div>
+                            <strong>Warning</strong>
+                            <p>If the accusation is wrong, the impostor will start hunting.</p>
+                        </div>
+                    </section>
+                </aside>
+            </section>
+
+            <footer class="eh-command-bar" aria-label="Mission controls">
+                <div class="eh-command-group eh-command-group--utility">
+                    <button id="new-ship-btn" class="eh-secondary" type="button">
+                        <span class="eh-keycap">R</span> New ship
+                    </button>
+                    <button id="regen-audio-btn" class="eh-secondary" type="button">Regen</button>
+                </div>
+
+                <div class="eh-command-group eh-command-group--primary">
+                    <button id="interact-btn" class="eh-primary" type="button">
+                        <span class="eh-btn-icon eh-btn-icon--chat"></span> <span class="eh-keycap">E</span> Interrogate
+                    </button>
+                    <button id="accuse-btn" class="eh-danger" type="button">
+                        <span class="eh-btn-icon eh-btn-icon--target"></span> <span class="eh-keycap">Q</span> Accuse
+                    </button>
+                </div>
+
+                <div class="eh-command-group eh-command-group--seed">
+                    <button id="replay-seed-btn" class="eh-secondary" type="button">
+                        <span class="eh-keycap">P</span> Replay
+                    </button>
+                    <button id="copy-seed-btn" class="eh-secondary" type="button">
+                        <span class="eh-keycap">C</span> Seed
+                    </button>
+                </div>
+            </footer>
+        </main>
+
+        <script type="module" src="src/main.js"></script>
+    </body>
+</html>

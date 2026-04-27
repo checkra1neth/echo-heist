@@ -1,0 +1,230 @@
+.eh-shell {
+  width: min(1536px, 100vw);
+  padding: 6px 6px 4px 6px;
+}
+
+.eh-topbar {
+  grid-template-columns: 220px minmax(0, 1fr);
+}
+
+.eh-brand-panel h1,
+.eh-panel h2,
+.eh-label,
+.eh-primary,
+.eh-secondary,
+.eh-danger,
+.eh-suspect-name,
+.eh-status-row time {
+  font-family: "Orbitron", var(--font);
+}
+
+.eh-panel {
+  border-color: rgba(41, 215, 241, 0.38);
+  border-radius: 5px;
+  background:
+    linear-gradient(180deg, rgba(33, 226, 244, 0.07), transparent 42%),
+    linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01) 44%),
+    rgba(3, 18, 27, 0.91);
+}
+
+.eh-panel::before {
+  inset: 4px;
+  border-color: rgba(48, 218, 239, 0.2);
+  clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+
+.eh-panel::after {
+  opacity: 0.22;
+}
+
+.eh-brand-panel {
+  min-height: 0;
+  padding: 6px 10px;
+}
+
+.eh-wave-mark {
+  position: relative;
+  width: 24px;
+  grid-template-columns: repeat(5, 3px);
+}
+
+.eh-wave-mark::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 6px;
+  width: 1px;
+  height: 20px;
+  background: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan);
+}
+
+.eh-wave-mark i {
+  width: 3px;
+  border-radius: 3px;
+}
+
+.eh-brand-panel h1 {
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.eh-subtitle {
+  color: #77e9ff;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.eh-telemetry-strip {
+  grid-template-columns: minmax(180px, 1.1fr) minmax(200px, 1fr) minmax(180px, 0.9fr);
+}
+
+.eh-telemetry {
+  min-height: 0;
+  padding: 6px 10px;
+}
+
+.eh-telemetry + .eh-telemetry {
+  border-left-color: rgba(41, 215, 241, 0.2);
+}
+
+.eh-label {
+  color: #20e1f2;
+  font-size: 10px;
+}
+
+.eh-telemetry strong {
+  color: #d5e8f0;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.eh-status-row strong {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.eh-status-orb {
+  width: 24px;
+  height: 24px;
+  border-color: rgba(111, 232, 137, 0.45);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(111, 232, 137, 0.95) 0 3px, transparent 4px),
+    radial-gradient(circle, rgba(111, 232, 137, 0.23), transparent 62%);
+}
+
+.eh-cockpit-grid {
+  grid-template-columns: 220px minmax(400px, 1fr) 240px;
+  gap: 6px;
+}
+
+.eh-guide-panel,
+.eh-progress-panel,
+.eh-evidence-panel,
+.eh-suspects-panel,
+.eh-warning-panel,
+.eh-map-panel {
+  padding: 6px 8px;
+}
+
+.eh-guide-panel h2,
+.eh-progress-panel h2,
+.eh-evidence-panel h2,
+.eh-suspects-panel h2,
+.eh-map-header h2 {
+  color: #d8edf6;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.eh-guide-list {
+  margin-top: 4px;
+}
+
+.eh-guide-list li {
+  min-height: 26px;
+  grid-template-columns: 20px 16px 1fr;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.eh-progress-panel {
+  gap: 6px;
+}
+
+.eh-progress-track .eh-dot {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid rgba(80, 145, 160, 0.65);
+  background: rgba(3, 18, 27, 0.9);
+}
+
+.eh-progress-track i {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--cyan), #5bffd4);
+  box-shadow: 0 0 12px rgba(40, 232, 242, 0.5);
+}
+
+.eh-evidence-list {
+  max-height: none;
+  gap: 6px;
+}
+
+.eh-evidence-item {
+  min-height: 0;
+  padding: 6px 32px 6px 8px;
+  border-left: 3px solid rgba(41, 219, 238, 0.5);
+  background:
+    linear-gradient(90deg, rgba(41, 219, 238, 0.1), rgba(41, 219, 238, 0.025)),
+    rgba(4, 32, 42, 0.74);
+  box-shadow: inset 4px 0 14px rgba(41, 219, 238, 0.06);
+}
+
+.eh-evidence-item:nth-child(2) {
+  border-color: rgba(103, 228, 137, 0.4);
+  border-left-color: rgba(103, 228, 137, 0.5);
+  background:
+    linear-gradient(90deg, rgba(103, 228, 137, 0.16), rgba(103, 228, 137, 0.03)),
+    rgba(4, 32, 42, 0.74);
+  box-shadow: inset 4px 0 14px rgba(103, 228, 137, 0.06);
+}
+
+.eh-evidence-item:nth-child(2)::before {
+  border-color: var(--green);
+  background:
+    linear-gradient(90deg, transparent 42%, var(--green) 43% 57%, transparent 58%),
+    rgba(103, 228, 137, 0.1);
+}
+
+.eh-evidence-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.eh-evidence-head strong {
+  color: #d9edf5;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.eh-evidence-head time {
+  color: #d9edf5;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.eh-evidence-item p {
+  margin: 2px 0 0;
+  color: #c8dbe3;
+  font-size: 12px;
+  line-height: 1.28;
+}
+
+.eh-map-panel {
+  gap: 4px;
+}
