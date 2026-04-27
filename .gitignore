@@ -10,6 +10,9 @@ node_modules/
 # OS files
 .DS_Store
 
+# Local plans
+VIDEO-PLAN.md
+
 # Logs
 *.log
 
