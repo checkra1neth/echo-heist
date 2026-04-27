@@ -7,6 +7,9 @@ node_modules/
 # Agents / Skills (Kiro)
 .agents/
 
+# Generated audio cache
+public/audio/
+
 # OS files
 .DS_Store
 
