@@ -267,7 +267,10 @@ export function showOverlay(title, body, buttonText) {
     escapeHtml(buttonText || "Start new ship") +
     "</button></div>";
   const btn = $("#overlay-action");
-  if (btn) btn.addEventListener("click", () => startNewRun());
+  if (btn) btn.addEventListener("click", async () => {
+    const { startNewRun } = await import('../game/session.js');
+    startNewRun();
+  });
 }
 
 export function hideOverlay() {

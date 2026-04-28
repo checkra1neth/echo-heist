@@ -1,62 +1,94 @@
+/* ── Ultra-wide (1800px+) ─────────────────────────── */
+@media (min-width: 1800px) {
+  .eh-cockpit-grid {
+    grid-template-columns: 280px minmax(500px, 1fr) 300px;
+  }
+
+  .eh-topbar {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+}
+
+/* ── Standard wide (1280–1799px) ──────────────────── */
+/* Default grid from 10-sidebars.css handles this */
+
+/* ── Medium (900–1279px) ──────────────────────────── */
 @media (max-width: 1280px) {
+  .eh-shell {
+    padding: 4px 4px 4px 4px;
+  }
+
   .eh-topbar {
     grid-template-columns: 1fr;
   }
 
   .eh-cockpit-grid {
-    grid-template-columns: 220px minmax(400px, 1fr);
+    grid-template-columns: 200px minmax(360px, 1fr) 220px;
   }
 
-  .eh-sidebar--right {
-    grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 1fr) 240px;
-  }
-
-  .eh-suspect-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-height: none;
-  }
-
-  .eh-command-bar {
-    flex-wrap: wrap;
+  .eh-brand-panel h1 {
+    font-size: 16px;
   }
 }
 
+/* ── Tablet / narrow (600–899px) ──────────────────── */
 @media (max-width: 900px) {
   .eh-shell {
-    width: min(100vw - 16px, 680px);
-    padding-top: 8px;
+    width: 100vw;
+    padding: 4px;
+    gap: 4px;
   }
 
-  .eh-telemetry-strip,
-  .eh-cockpit-grid,
+  .eh-topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .eh-telemetry-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .eh-cockpit-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(300px, 1fr) auto;
+  }
+
+  .eh-sidebar--left {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .eh-sidebar--left .eh-guide-panel {
+    display: none;
+  }
+
   .eh-sidebar--right {
     grid-template-columns: 1fr;
   }
 
+  .eh-suspect-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    max-height: none;
+  }
+
   .eh-brand-panel h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .eh-brand-panel {
     min-height: 0;
-    padding: 8px;
+    padding: 6px 8px;
   }
 
-  .eh-map-header,
-  .eh-map-footer,
-  .eh-command-group,
-  .eh-command-group--primary {
-    flex-direction: column;
-    align-items: stretch;
+  .eh-command-bar {
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
-  .eh-map-legend {
-    gap: 6px;
-  }
-
-  .eh-suspect-list {
-    grid-template-columns: 1fr;
+  .eh-command-group {
+    flex: 1;
+    min-width: 0;
   }
 
   .eh-primary,
@@ -64,5 +96,61 @@
   .eh-secondary {
     width: 100%;
     min-width: 0;
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+}
+
+/* ── Mobile (< 600px) ────────────────────────────── */
+@media (max-width: 600px) {
+  .eh-shell {
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
+    overflow: auto;
+  }
+
+  .eh-cockpit-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(240px, 60vh) auto;
+  }
+
+  .eh-sidebar--left {
+    grid-template-columns: 1fr;
+    order: 2;
+  }
+
+  .eh-map-column {
+    order: 1;
+  }
+
+  .eh-sidebar--right {
+    order: 3;
+  }
+
+  .eh-sidebar--left .eh-guide-panel,
+  .eh-sidebar--left .eh-progress-panel {
+    display: none;
+  }
+
+  .eh-map-legend {
+    display: none;
+  }
+
+  .eh-map-tools {
+    display: none;
+  }
+
+  .eh-command-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding: 4px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .eh-command-group--seed {
+    display: none;
   }
 }

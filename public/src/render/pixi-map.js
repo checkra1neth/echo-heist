@@ -89,10 +89,10 @@ function buildBackdrop() {
   const g = new Graphics();
 
   // ═══ Dark base ═══
-  g.rect(0, 0, WIDTH, HEIGHT).fill(0x030710);
+  g.rect(0, 0, WIDTH, HEIGHT).fill(0x040912);
 
   // ═══ Subtle grid ═══
-  g.setStrokeStyle({ width: 1, color: 0x0e1e2e, alpha: 0.2 });
+  g.setStrokeStyle({ width: 1, color: 0x0e1e2e, alpha: 0.28 });
   for (let x = 0; x <= WIDTH; x += TILE) {
     g.moveTo(x, 0).lineTo(x, HEIGHT).stroke();
   }
@@ -358,7 +358,7 @@ function buildRooms() {
     g.poly(bevelPts(rx, ry, rw, rh, bev), true)
       .fill({ color: hslHex(hue, 15, 9), alpha: 0.4 });
     g.poly(bevelPts(rx, ry, rw, rh, bev), true)
-      .stroke({ width: 2, color: accentBright, alpha: 0.45 });
+      .stroke({ width: 2, color: accentBright, alpha: 0.55 });
 
     // ═══ Inner shadow (dark edges inside room = depth) ═══
     g.poly(bevelPts(rx + 4, ry + 4, rw - 8, rh - 8, bev - 2), true)
@@ -411,7 +411,7 @@ function buildRooms() {
 
     // ═══ Corner brackets (greebles) ═══
     const s = 18, n = 5;
-    g.setStrokeStyle({ width: 2.5, color: accentBright, alpha: 0.5 });
+    g.setStrokeStyle({ width: 2.5, color: accentBright, alpha: 0.6 });
     // Top-left
     g.moveTo(rx + n, ry + n + s).lineTo(rx + n, ry + n).lineTo(rx + n + s, ry + n).stroke();
     // Top-right
@@ -458,7 +458,7 @@ function buildLabels() {
     fontFamily: 'Orbitron, Inter, system-ui, sans-serif',
     fontWeight: '800',
     fontSize: 11,
-    fill: 0xc8dce8,
+    fill: 0xe0f0f8,
     align: 'center',
     letterSpacing: 1.5,
   });
@@ -471,7 +471,7 @@ function buildLabels() {
       anchor: 0.5,
       x: cx,
       y: cy,
-      alpha: 0.65,
+      alpha: 0.82,
     });
     label.label = 'room-label-' + room.name;
     container.addChild(label);
@@ -899,14 +899,14 @@ function buildScanlines() {
 
   // Screen vignette (blurred dark edges)
   const vig = new Graphics();
-  vig.rect(0, 0, WIDTH, 50).fill({ color: 0x000000, alpha: 0.3 });
-  vig.rect(0, HEIGHT - 50, WIDTH, 50).fill({ color: 0x000000, alpha: 0.3 });
-  vig.rect(0, 0, 50, HEIGHT).fill({ color: 0x000000, alpha: 0.25 });
-  vig.rect(WIDTH - 50, 0, 50, HEIGHT).fill({ color: 0x000000, alpha: 0.25 });
-  vig.rect(0, 0, 120, 90).fill({ color: 0x000000, alpha: 0.2 });
-  vig.rect(WIDTH - 120, 0, 120, 90).fill({ color: 0x000000, alpha: 0.2 });
-  vig.rect(0, HEIGHT - 90, 120, 90).fill({ color: 0x000000, alpha: 0.2 });
-  vig.rect(WIDTH - 120, HEIGHT - 90, 120, 90).fill({ color: 0x000000, alpha: 0.2 });
+  vig.rect(0, 0, WIDTH, 50).fill({ color: 0x000000, alpha: 0.18 });
+  vig.rect(0, HEIGHT - 50, WIDTH, 50).fill({ color: 0x000000, alpha: 0.18 });
+  vig.rect(0, 0, 50, HEIGHT).fill({ color: 0x000000, alpha: 0.15 });
+  vig.rect(WIDTH - 50, 0, 50, HEIGHT).fill({ color: 0x000000, alpha: 0.15 });
+  vig.rect(0, 0, 120, 90).fill({ color: 0x000000, alpha: 0.12 });
+  vig.rect(WIDTH - 120, 0, 120, 90).fill({ color: 0x000000, alpha: 0.12 });
+  vig.rect(0, HEIGHT - 90, 120, 90).fill({ color: 0x000000, alpha: 0.12 });
+  vig.rect(WIDTH - 120, HEIGHT - 90, 120, 90).fill({ color: 0x000000, alpha: 0.12 });
   vig.filters = [new BlurFilter({ strength: 12, quality: 2 })];
   container.addChild(vig);
 
@@ -1077,6 +1077,23 @@ export async function initPixiMap(canvasEl) {
   if (canvasEl) opts.canvas = canvasEl;
 
   await app.init(opts);
+
+  // Responsive: fit canvas into its container while keeping aspect ratio
+  if (canvasEl && canvasEl.parentElement) {
+    const frame = canvasEl.parentElement;
+    const fitCanvas = () => {
+      const fw = frame.clientWidth;
+      const fh = frame.clientHeight;
+      if (fw <= 0 || fh <= 0) return;
+      const scale = Math.min(fw / WIDTH, fh / HEIGHT);
+      canvasEl.style.width = Math.floor(WIDTH * scale) + 'px';
+      canvasEl.style.height = Math.floor(HEIGHT * scale) + 'px';
+    };
+    // Initial fit after layout settles
+    requestAnimationFrame(() => { fitCanvas(); requestAnimationFrame(fitCanvas); });
+    new ResizeObserver(fitCanvas).observe(frame);
+  }
+
   buildScene();
   setupAnimations();
 }

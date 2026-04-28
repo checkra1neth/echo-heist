@@ -9,7 +9,7 @@ export function ensureAudio() {
   const ctx = new AC();
   setAudioCtx(ctx);
   const gain = ctx.createGain();
-  gain.gain.value = 0.18;
+  gain.gain.value = 0.45;
   gain.connect(ctx.destination);
   setMasterGain(gain);
 }
@@ -305,8 +305,8 @@ export function hydrateMissionAudio(mission) {
   };
 
   if (audio.music) {
-    setStealthMusic(make(audio.music.stealth, true, 0.34));
-    setAlertMusic(make(audio.music.alert, true, 0.44));
+    setStealthMusic(make(audio.music.stealth, true, 0.52));
+    setAlertMusic(make(audio.music.alert, true, 0.62));
   }
 
   sfx.clear();
