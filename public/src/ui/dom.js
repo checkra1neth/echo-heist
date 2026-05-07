@@ -48,6 +48,7 @@ export function initUi() {
     overlay: $("#overlay"),
     suspectList: $("#suspect-list"),
     evidenceList: $("#evidence-list"),
+    audiologList: $("#audiolog-list"),
     title: $("#game-title"),
     subtitle: $(".eh-subtitle"),
   });

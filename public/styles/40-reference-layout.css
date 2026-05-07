@@ -19,22 +19,24 @@
 }
 
 .eh-panel {
-  border-color: rgba(41, 215, 241, 0.38);
-  border-radius: 5px;
+  border-color: rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
   background:
-    linear-gradient(180deg, rgba(33, 226, 244, 0.07), transparent 42%),
-    linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01) 44%),
-    rgba(3, 18, 27, 0.91);
+    linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+    var(--panel);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .eh-panel::before {
-  inset: 4px;
-  border-color: rgba(48, 218, 239, 0.2);
-  clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+  inset: 1px;
+  border-color: rgba(255, 255, 255, 0.06);
+  border-radius: 13px;
+  clip-path: none;
 }
 
 .eh-panel::after {
-  opacity: 0.22;
+  opacity: 0.28;
 }
 
 .eh-brand-panel {
@@ -156,15 +158,17 @@
 .eh-progress-track .eh-dot {
   width: 8px;
   height: 8px;
-  border: 1.5px solid rgba(80, 145, 160, 0.65);
-  background: rgba(3, 18, 27, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .eh-progress-track i {
   height: 3px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--cyan), #5bffd4);
-  box-shadow: 0 0 12px rgba(40, 232, 242, 0.5);
+  background: linear-gradient(90deg, var(--cyan), #93c5fd);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.25);
 }
 
 .eh-evidence-list {
@@ -175,27 +179,29 @@
 .eh-evidence-item {
   min-height: 0;
   padding: 6px 32px 6px 8px;
-  border-left: 3px solid rgba(41, 219, 238, 0.5);
+  border-left: 3px solid rgba(96, 165, 250, 0.4);
   background:
-    linear-gradient(90deg, rgba(41, 219, 238, 0.1), rgba(41, 219, 238, 0.025)),
-    rgba(4, 32, 42, 0.74);
-  box-shadow: inset 4px 0 14px rgba(41, 219, 238, 0.06);
+    linear-gradient(90deg, rgba(96, 165, 250, 0.06), rgba(96, 165, 250, 0.02)),
+    rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 4px 0 14px rgba(96, 165, 250, 0.03);
 }
 
 .eh-evidence-item:nth-child(2) {
-  border-color: rgba(103, 228, 137, 0.4);
-  border-left-color: rgba(103, 228, 137, 0.5);
+  border-color: rgba(52, 211, 153, 0.3);
+  border-left-color: rgba(52, 211, 153, 0.4);
   background:
-    linear-gradient(90deg, rgba(103, 228, 137, 0.16), rgba(103, 228, 137, 0.03)),
-    rgba(4, 32, 42, 0.74);
-  box-shadow: inset 4px 0 14px rgba(103, 228, 137, 0.06);
+    linear-gradient(90deg, rgba(52, 211, 153, 0.1), rgba(52, 211, 153, 0.02)),
+    rgba(255, 255, 255, 0.03);
+  box-shadow: inset 4px 0 14px rgba(52, 211, 153, 0.03);
 }
 
 .eh-evidence-item:nth-child(2)::before {
   border-color: var(--green);
   background:
     linear-gradient(90deg, transparent 42%, var(--green) 43% 57%, transparent 58%),
-    rgba(103, 228, 137, 0.1);
+    rgba(52, 211, 153, 0.06);
 }
 
 .eh-evidence-head {

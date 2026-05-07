@@ -555,6 +555,64 @@ app.post("/api/cast", async (req, res) => {
   });
 });
 
+const TUTORIAL_LINES = {
+  welcome: "Welcome aboard. I am Nova, your ship operator. This is a voice-guided tour of the Echo Impostor protocol. Listen carefully, your survival depends on it.",
+  movement: "Use W, A, S, D or arrow keys to move through the ship. Hold shift to sprint, but be warned — sprinting creates noise that attracts the impostor.",
+  hiding: "Press space near lockers or vents to hide in acoustic shadows. The impostor cannot hear you while hidden. Use this wisely.",
+  tasks: "Collect evidence by completing tasks marked on your map. You need three pieces of evidence before you can safely accuse anyone.",
+  interrogation: "Press E near crew members to interrogate them. Listen to their voices carefully — the impostor's speech contains subtle compression artifacts that differ from human crew.",
+  accusation: "Once you have enough evidence, press Q near a suspect to accuse them. Be absolutely certain — a wrong accusation triggers the impostor's hunt protocol.",
+  noise: "Watch your noise meter. Moving through vents, sprinting, or making too much sound will draw the impostor to your location. Stay quiet. Stay alive.",
+  replay: "You can replay any voice recording from the evidence log. Click the play button next to each entry to hear it again. Compare voices. Find the lie.",
+  'audio-logs': "Scattered throughout the ship are audio logs from previous crew members. These logs contain valuable backstory and may reveal patterns in the impostor's behavior.",
+};
+
+app.post("/api/tutorial", async (req, res) => {
+  const seed = req.body?.seed
+    ? String(req.body.seed).replace(/[^a-z0-9-]/gi, "").slice(0, 32) || "default"
+    : randomUUID().slice(0, 8);
+
+  if (!HAS_ELEVENLABS_KEY) {
+    res.json({
+      generated: false,
+      mode: "fallback",
+      seed,
+      clips: [],
+      message: "No ElevenLabs API key found. Tutorial will use browser speech fallback.",
+    });
+    return;
+  }
+
+  const clips = [];
+  const failed = [];
+
+  for (const [id, text] of Object.entries(TUTORIAL_LINES)) {
+    const filename = `tutorial-${id}-${seed}.mp3`;
+    try {
+      const clip = await generateTts({
+        id,
+        text,
+        voiceId: VOICES.operator.id,
+        filename,
+      });
+      clips.push(clip);
+    } catch (error) {
+      failed.push({ id, text, error: error?.message || String(error) });
+    }
+  }
+
+  res.json({
+    generated: clips.length > 0,
+    mode: failed.length ? "partial" : "generated",
+    seed,
+    clips,
+    failed,
+    message: failed.length
+      ? "Tutorial generated with partial audio. Missing clips will use fallback."
+      : "Tutorial audio generated successfully.",
+  });
+});
+
 app.post("/api/mission", async (req, res) => {
   const seed = req.body?.seed
     ? String(req.body.seed).replace(/[^a-z0-9-]/gi, "").slice(0, 32) || "default"

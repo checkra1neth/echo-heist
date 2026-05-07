@@ -10,28 +10,30 @@
 .eh-map-tools {
   min-height: 26px;
   padding: 0 10px;
-  border-color: rgba(37, 217, 240, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
   color: #2fe9ff;
 }
 
 /* --- Canvas frame with enhanced glow --- */
 .eh-canvas-frame {
-  border-color: rgba(38, 217, 238, 0.44);
+  border-color: rgba(255, 255, 255, 0.08);
   background:
-    linear-gradient(90deg, rgba(40, 232, 242, 0.05) 1px, transparent 1px),
-    linear-gradient(rgba(40, 232, 242, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 50% 50%, rgba(8, 58, 72, 0.50), transparent 55%),
-    radial-gradient(ellipse 120% 80% at 50% 40%, rgba(6, 42, 52, 0.30), transparent 60%),
-    #010509;
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(30, 58, 138, 0.25), transparent 55%),
+    radial-gradient(ellipse 120% 80% at 50% 40%, rgba(30, 27, 75, 0.15), transparent 60%),
+    rgba(1, 5, 9, 0.5);
   background-size: 34px 34px, 34px 34px, auto, auto, auto;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   box-shadow:
-    inset 0 0 80px rgba(40, 232, 242, 0.08),
-    inset 0 0 200px rgba(0, 0, 0, 0.25);
+    inset 0 0 80px rgba(96, 165, 250, 0.04),
+    inset 0 0 200px rgba(0, 0, 0, 0.2);
 }
 
 canvas[data-echo-heist] {
   max-width: 100%;
-  filter: saturate(1.15) contrast(1.18) brightness(1.08);
+  filter: saturate(1.12) contrast(1.12) brightness(1.05);
 }
 
 /* --- Map footer --- */
@@ -68,11 +70,13 @@ canvas[data-echo-heist] {
   grid-template-columns: 48px minmax(0, 1fr) 26px;
   min-height: 56px;
   padding: 4px;
-  border-color: rgba(64, 213, 232, 0.42);
+  border-color: rgba(255, 255, 255, 0.08);
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--crew) 22%, transparent), transparent 46%),
-    rgba(8, 42, 54, 0.82);
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.12);
+    linear-gradient(90deg, color-mix(in srgb, var(--crew) 14%, transparent), transparent 46%),
+    rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.08);
 }
 
 .eh-suspect-copy {
@@ -87,14 +91,14 @@ canvas[data-echo-heist] {
   height: 52px;
   border-width: 2px;
   border-style: solid;
-  border-color: color-mix(in srgb, var(--crew) 72%, #ffffff 12%);
-  border-radius: 4px;
+  border-color: color-mix(in srgb, var(--crew) 55%, rgba(255,255,255,0.15));
+  border-radius: 10px;
   background:
-    linear-gradient(160deg, color-mix(in srgb, var(--crew) 18%, #091520), #02080e 70%);
+    linear-gradient(160deg, color-mix(in srgb, var(--crew) 14%, #091520), #02080e 70%);
   overflow: hidden;
   box-shadow:
-    inset 0 0 30px rgba(0,0,0,0.5),
-    0 0 24px color-mix(in srgb, var(--crew) 32%, transparent);
+    inset 0 0 30px rgba(0,0,0,0.4),
+    0 0 24px color-mix(in srgb, var(--crew) 24%, transparent);
 }
 
 /* Ambient glow overlay */
@@ -808,8 +812,8 @@ canvas[data-echo-heist] {
 .eh-suspect-wave {
   height: 12px;
   background:
-    repeating-linear-gradient(90deg, color-mix(in srgb, var(--crew) 80%, var(--cyan)) 0 2px, transparent 2px 5px);
-  opacity: 0.88;
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--crew) 75%, var(--cyan)) 0 2px, transparent 2px 5px);
+  opacity: 0.8;
 }
 
 /* ============================================================
@@ -817,10 +821,12 @@ canvas[data-echo-heist] {
    ============================================================ */
 .eh-warning-panel {
   min-height: 44px;
-  border-color: rgba(255, 72, 72, 0.55);
+  border-color: rgba(248, 113, 113, 0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow:
-    inset 0 0 40px rgba(255, 72, 72, 0.06),
-    0 0 30px rgba(255, 72, 72, 0.08);
+    inset 0 0 40px rgba(248, 113, 113, 0.03),
+    0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .eh-warning-sigil {
@@ -828,8 +834,8 @@ canvas[data-echo-heist] {
 }
 
 @keyframes warningPulse {
-  0%, 100% { box-shadow: 0 0 24px rgba(255, 72, 72, 0.34); }
-  50% { box-shadow: 0 0 36px rgba(255, 72, 72, 0.55), 0 0 60px rgba(255, 72, 72, 0.15); }
+  0%, 100% { box-shadow: 0 0 24px rgba(248, 113, 113, 0.25); }
+  50% { box-shadow: 0 0 36px rgba(248, 113, 113, 0.4), 0 0 60px rgba(248, 113, 113, 0.1); }
 }
 
 /* ============================================================
@@ -843,8 +849,8 @@ canvas[data-echo-heist] {
 
 .eh-command-group {
   padding: 4px 8px;
-  border-color: rgba(45, 204, 229, 0.18);
-  border-radius: 4px;
+  border-color: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
 }
 
 .eh-command-group--utility {
@@ -893,10 +899,12 @@ canvas[data-echo-heist] {
   min-width: 22px;
   min-height: 18px;
   padding: 0 4px;
-  border: 1px solid rgba(81, 190, 216, 0.44);
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
   color: #8ed4e6;
-  background: rgba(8, 33, 46, 0.85);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   font-size: 10px;
   font-weight: 800;
 }

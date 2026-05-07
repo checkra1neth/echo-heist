@@ -1,6 +1,10 @@
 import { state, TILE, COLS, ROWS, COLORS, NOVA_LINES, choice, randInt, voiceCache } from '../core/state.js';
 import { playSfx, speakCharacter, startAlertMusic, stopMusic } from '../audio/audio.js';
 import { cacheVoice } from '../audio/voice-cache.js';
+import { triggerTutorial } from '../audio/voice-guide.js';
+import { checkAudioLogCollection, isNearAudioLog } from '../audio/audio-logs.js';
+import { updateRoomNarration } from '../audio/room-narration.js';
+import { updateProximityVoice } from '../audio/proximity-voice.js';
 import { bus } from '../core/event-bus.js';
 import { addEvidence, updateIntelPanel, setObjective, setStatus, toast, emitParticles, updateParticles, showOverlay, hideOverlay, findPackedVoice } from '../ui/panels.js';
 import { formatTime } from '../render/primitives.js';
@@ -25,6 +29,9 @@ export function update(dt) {
   updateCrew(dt);
   updateObjectiveState();
   updateParticles(dt);
+  updateRoomNarration();
+  updateProximityVoice();
+  checkAudioLogCollection();
   state.scanOffset = (state.scanOffset + dt * 34) % 80;
   state.minimapPulse += dt;
   updateUi();
@@ -41,6 +48,9 @@ export function updatePlayer(dt) {
 
   const moving = dx || dy;
   if (!moving) return;
+
+  // Trigger first-move tutorial
+  triggerTutorial('first-move');
 
   const len = Math.hypot(dx, dy);
   dx /= len;
@@ -78,6 +88,11 @@ export function updatePlayer(dt) {
   if (loud && Math.random() < dt * 1.8) {
     state.cameraShake = 3;
     toast("Vent grid is loud");
+  }
+
+  // Trigger high-noise tutorial
+  if (state.noise > 60) {
+    triggerTutorial('high-noise');
   }
 }
 
@@ -161,17 +176,32 @@ export function updateObjectiveState() {
   const nearTask = nearestTask();
   if (nearTask && !nearTask.done) {
     toast("E: " + nearTask.label);
+    triggerTutorial('near-task');
   }
 
   const nearCrew = nearestCrew(82);
   if (nearCrew) {
     toast("E interrogate " + nearCrew.name + " · Q accuse");
+    triggerTutorial('near-crew');
+  }
+
+  // Check for nearby audio logs
+  const nearLog = isNearAudioLog();
+  if (nearLog) {
+    toast("Audio log nearby: " + nearLog.title);
+    triggerTutorial('near-audiolog');
+  }
+
+  // Check for nearby hideouts
+  if (isHiding(state.player.x, state.player.y)) {
+    triggerTutorial('near-hideout');
   }
 
   if (state.completedTasks >= state.requiredTasks && !state.meetingUnlocked) {
     state.meetingUnlocked = true;
     setObjective("Enough evidence. Interrogate suspects and press Q near the impostor.");
     speakCharacter("nova", NOVA_LINES.ready);
+    triggerTutorial('meeting-unlocked');
   }
 
   if (state.exit && state.completedTasks >= state.requiredTasks && state.accusations > 0) {
@@ -213,6 +243,7 @@ export function interact() {
     state.noise = Math.min(100, state.noise + 8);
     playSfx("task");
     emitParticles(task.x * TILE + TILE / 2, task.y * TILE + TILE / 2, COLORS.amber, 30, 1.2);
+    triggerTutorial('first-evidence');
     if (state.completedTasks >= state.requiredTasks) {
       setObjective("Enough evidence. Interrogate suspects and press Q near the impostor.");
     } else {

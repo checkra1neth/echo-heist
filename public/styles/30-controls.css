@@ -14,9 +14,11 @@
   gap: 4px;
   min-width: 0;
   padding: 4px 6px;
-  border: 1px solid rgba(40, 232, 242, 0.14);
-  border-radius: 6px;
-  background: rgba(2, 10, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .eh-command-group--primary {
@@ -43,7 +45,7 @@
   gap: 5px;
   min-height: 32px;
   padding: 0 10px;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -55,34 +57,42 @@
 /* ── Primary (Допросить) ────────────────────────────────── */
 
 .eh-primary {
-  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-  border: 1px solid rgba(40, 232, 242, 0.8);
+  border: 1px solid rgba(96, 165, 250, 0.4);
   color: var(--cyan-strong);
   background:
-    linear-gradient(90deg, rgba(40, 232, 242, 0.24), rgba(40, 232, 242, 0.05)),
-    rgba(2, 28, 37, 0.96);
-  box-shadow: 0 0 22px rgba(40, 232, 242, 0.18), inset 0 0 14px rgba(40, 232, 242, 0.08);
+    linear-gradient(135deg, rgba(96, 165, 250, 0.15), rgba(96, 165, 250, 0.03)),
+    rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 16px rgba(96, 165, 250, 0.1),
+    inset 0 0 12px rgba(96, 165, 250, 0.05);
 }
 
 /* ── Danger (Обвинить) ──────────────────────────────────── */
 
 .eh-danger {
-  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-  border: 1px solid rgba(255, 72, 72, 0.8);
-  color: #ff6969;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  color: #fb9a9a;
   background:
-    linear-gradient(90deg, rgba(255, 72, 72, 0.24), rgba(255, 72, 72, 0.06)),
-    rgba(37, 7, 8, 0.96);
-  box-shadow: 0 0 22px rgba(255, 72, 72, 0.18), inset 0 0 14px rgba(255, 72, 72, 0.08);
+    linear-gradient(135deg, rgba(248, 113, 113, 0.15), rgba(248, 113, 113, 0.03)),
+    rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 16px rgba(248, 113, 113, 0.1),
+    inset 0 0 12px rgba(248, 113, 113, 0.05);
 }
 
 /* ── Secondary (all small buttons) ──────────────────────── */
 
 .eh-secondary {
   padding: 0 12px;
-  border: 1px solid rgba(116, 196, 220, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #bdd3dc;
-  background: rgba(7, 25, 35, 0.9);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* ── Hover / active ─────────────────────────────────────── */
@@ -167,9 +177,11 @@
   min-width: 20px;
   height: 20px;
   padding: 0 4px;
-  border: 1px solid rgba(116, 196, 220, 0.35);
-  border-radius: 3px;
-  background: rgba(10, 30, 45, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   font-size: 9px;
   font-weight: 800;
   line-height: 1;

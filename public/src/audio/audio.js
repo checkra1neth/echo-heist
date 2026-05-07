@@ -1,5 +1,9 @@
 import { state, audioCtx, masterGain, sfx, voiceCache, voiceBufferCache, activeVoiceSource, stealthMusic, alertMusic, ui, setAudioCtx, setMasterGain, setStealthMusic, setAlertMusic, setActiveVoiceSource } from '../core/state.js';
 import { setMissionButtonText, setStatus, findPackedVoice, preGenerateCastVoices } from '../ui/panels.js';
+import { generateTutorialAudio } from './voice-guide.js';
+import { generateAudioLogPack } from './audio-logs.js';
+import { generateRoomNarrationPack } from './room-narration.js';
+import { generateProximityPack } from './proximity-voice.js';
 import { bus } from '../core/event-bus.js';
 
 export function ensureAudio() {
@@ -153,12 +157,20 @@ export async function playVoiceSource(src, text, character) {
   }
 }
 
-export async function speakCharacter(character, text, voiceId) {
+export async function speakCharacter(character, text, voiceId, preloadedSrc = null) {
   ensureAudio();
   resumeAudio();
 
   // Emit voice event for visual pulse effect
   bus.emit('voice:play', { characterId: character, text });
+
+  // Use preloaded source if provided (from voice packs)
+  if (preloadedSrc) {
+    voiceCache.set(character + "::" + text, preloadedSrc);
+    bus.emit('voice:cached', { characterId: character, src: preloadedSrc, text });
+    playVoiceSource(preloadedSrc, text, character);
+    return;
+  }
 
   const cacheKey = character + "::" + text;
   if (voiceCache.has(cacheKey)) {
@@ -216,14 +228,18 @@ export async function generateAudioPack({ silent = false } = {}) {
 
   setStatus(
     includeCast
-      ? "Generating crew voices and mission audio..."
-      : "Generating mission audio...",
+      ? "Generating immersive audio: crew voices, tutorials, audio logs, room ambience..."
+      : "Generating mission audio and voice-guided tour...",
   );
 
   try {
-    const [mission, cast] = await Promise.all([
+    const [mission, cast, tutorial, audioLogs, roomNarration, proximity] = await Promise.all([
       generateMissionAudio({ silent: true }),
       includeCast ? preGenerateCastVoices() : Promise.resolve(null),
+      generateTutorialAudio(state.seed),
+      generateAudioLogPack(state.seed),
+      generateRoomNarrationPack(state.seed),
+      generateProximityPack(state.seed),
     ]);
 
     const castReady =
@@ -232,19 +248,21 @@ export async function generateAudioPack({ silent = false } = {}) {
         clips.some((clip) => Boolean(clip.src)),
       );
 
+    const immersiveReady = tutorial || audioLogs || roomNarration || proximity;
+
     setStatus(
-      mission?.generated || castReady
+      mission?.generated || castReady || immersiveReady
         ? includeCast
-          ? "Crew voices ready"
+          ? "Immersive audio ready"
           : "Mission audio ready"
         : "Fallback audio ready",
     );
 
-    return { mission, cast };
+    return { mission, cast, tutorial, audioLogs, roomNarration, proximity };
   } catch (error) {
     console.warn("[audio pack]", error);
     setStatus("Fallback audio ready");
-    return { mission: null, cast: null };
+    return { mission: null, cast: null, tutorial: null, audioLogs: null, roomNarration: null, proximity: null };
   } finally {
     if (!silent && ui.missionBtn) {
       ui.missionBtn.disabled = false;

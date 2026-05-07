@@ -1,9 +1,17 @@
 import { state, ui, COLORS, CREW_TEMPLATES, CREW_ROLES, NOVA_LINES, voiceCache, voiceBufferCache, $, canvas } from '../core/state.js';
 import { ensureAudio, resumeAudio, stopActiveVoice, primeVoiceBuffer, speakFallback, speakCharacter, generateAudioPack as _generateAudioPack } from '../audio/audio.js';
 import { hasVoice, replayVoice } from '../audio/voice-cache.js';
+import { getCollectedLogs, replayAudioLog } from '../audio/audio-logs.js';
+import { bus } from '../core/event-bus.js';
 
 let suspectListenerBound = false;
 let evidenceListenerBound = false;
+let audiologListenerBound = false;
+
+// Listen for audio log collection events
+bus.on('audiolog:collected', () => {
+  updateAudioLogPanel();
+});
 
 const EVIDENCE_TYPES = {
   interrogation: { icon: 'voice', label: 'Voice Recording', color: 'cyan' },
@@ -142,6 +150,43 @@ export function updateIntelPanel() {
   }
 
   updateProgressPanel();
+  updateAudioLogPanel();
+}
+
+export function updateAudioLogPanel() {
+  if (!ui.audiologList) return;
+
+  const logs = getCollectedLogs();
+  if (!logs.length) {
+    ui.audiologList.innerHTML =
+      '<div class="eh-empty-state">Explore the ship to discover audio logs from previous crew members.</div>';
+    return;
+  }
+
+  ui.audiologList.innerHTML = logs
+    .map((log, idx) => {
+      const delay = idx * 50;
+      return (
+        '<div class="eh-audiolog-item" style="animation-delay:' + delay + 'ms">' +
+        '<div class="eh-ev-body">' +
+        '<div class="eh-evidence-head"><strong>' + escapeHtml(log.title) + '</strong><time>' + escapeHtml(log.room) + '</time></div>' +
+        '<p>' + escapeHtml(log.text.substring(0, 80)) + '...</p>' +
+        '</div>' +
+        '<button class="eh-audiolog-play eh-suspect-play" data-log-id="' + escapeHtml(log.id) + '" type="button" aria-label="Play audio log"></button>' +
+        '</div>'
+      );
+    })
+    .join('');
+
+  if (!audiologListenerBound) {
+    ui.audiologList.addEventListener('click', (e) => {
+      const btn = e.target.closest('.eh-audiolog-play');
+      if (!btn || btn.disabled) return;
+      const logId = btn.dataset.logId;
+      if (logId) replayAudioLog(logId);
+    });
+    audiologListenerBound = true;
+  }
 }
 
 export function updateProgressPanel() {

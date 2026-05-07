@@ -1,6 +1,10 @@
 import { state, COLORS, canvas, ui, voiceCache, voiceBufferCache, cellCenter, NOVA_LINES } from '../core/state.js';
 import { ensureAudio, resumeAudio, stopActiveVoice, stopMusic, generateAudioPack, speakCharacter, startMusic } from '../audio/audio.js';
 import { clearCache } from '../audio/voice-cache.js';
+import { initTutorial, generateTutorialAudio, triggerTutorial } from '../audio/voice-guide.js';
+import { initAudioLogs, generateAudioLogPack, checkAudioLogCollection, isNearAudioLog, clearAudioLogs } from '../audio/audio-logs.js';
+import { initRoomNarration, updateRoomNarration, generateRoomNarrationPack } from '../audio/room-narration.js';
+import { initProximityVoice, updateProximityVoice, generateProximityPack } from '../audio/proximity-voice.js';
 import { buildProceduralMap, spawnCrew } from '../map/generator.js';
 import { updateIntelPanel, setObjective, setStatus, addEvidence, hideOverlay, emitParticles, setMissionButtonText } from '../ui/panels.js';
 import { buildScene } from '../render/pixi-map.js';
@@ -41,12 +45,13 @@ export async function startNewRun(seedOverride = null) {
   stopActiveVoice();
   stopMusic();
   clearCache();
+  clearAudioLogs();
   state.revealedImpostor = false;
   state.lastSeed = state.seed;
   state.cinematic = {
     title: "GENERATING VOICES",
     subtitle:
-      "Seed " + state.seed + " · Preparing crew, music and SFX.",
+      "Seed " + state.seed + " · Preparing crew, music, SFX, tutorials and audio logs.",
     tone: "cyan",
     until: performance.now() + 100000,
   };
@@ -57,8 +62,8 @@ export async function startNewRun(seedOverride = null) {
   spawnCrew(start);
   buildScene();
   updateIntelPanel();
-  setObjective("Generating ElevenLabs voices, music and sound effects...");
-  setStatus("Preparing audio");
+  setObjective("Generating ElevenLabs voices, music, sound effects, tutorials and audio logs...");
+  setStatus("Preparing immersive audio experience");
   addEvidence(
     "Ship Manifest|Seed " +
       state.seed +
@@ -73,15 +78,21 @@ export async function startNewRun(seedOverride = null) {
   if (ui.overlay) {
     ui.overlay.classList.add("active");
     ui.overlay.innerHTML =
-      "<div><h2>Generating voices</h2><p>ElevenLabs is preparing crew lines, impostor dialogue, mission music and SFX.</p></div>";
+      "<div><h2>Generating immersive audio</h2><p>ElevenLabs is preparing crew lines, impostor dialogue, mission music, SFX, voice-guided tutorials, room ambience narration, proximity hints and collectible audio logs.</p></div>";
   }
+
+  // Initialize new audio systems
+  initTutorial();
+  initAudioLogs(seed);
+  initRoomNarration();
+  initProximityVoice();
 
   await generateAudioPack({ silent: true });
 
   state.mode = "playing";
   state.cinematic = {
     title: state.demoMode ? "DEMO READY" : "SHIP READY",
-    subtitle: "Voices loaded · Seed " + state.seed + " · Find the impostor.",
+    subtitle: "Immersive audio loaded · Seed " + state.seed + " · Find the impostor.",
     tone: "cyan",
     until: performance.now() + 2600,
   };
@@ -89,9 +100,13 @@ export async function startNewRun(seedOverride = null) {
   setObjective(
     "Collect 3 clues, interrogate crew and press Q near the impostor.",
   );
-  setStatus("Seed " + state.seed + " · Voices ready");
+  setStatus("Seed " + state.seed + " · Immersive audio ready");
   startMusic();
   speakCharacter("nova", NOVA_LINES.intro);
+
+  // Trigger welcome tutorial for new players
+  triggerTutorial('startup');
+
   canvas.focus();
 }
 
