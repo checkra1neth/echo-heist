@@ -6,7 +6,7 @@
 
 A procedural social stealth game where **ElevenLabs-generated voices turn every crew member into a suspect**. Voice isn't background noise — it's the core mechanic.
 
-[🎮 Play the Game](https://echo-heist.vercel.app) · [📹 Watch the Demo](https://youtube.com/your-video) · [🐦 Share on X](https://twitter.com/intent/tweet?text=Echo+Impostor+%E2%80%94+a+voice-driven+stealth+game+built+with+%40elevenlabsio+for+%23ElevenHacks)
+[🎮 Play the Game](https://echo-heist.vercel.app) · [📹 Watch the Demo](https://x.com/checkra1ndev/status/2049135485352583201) · [🐦 Share on X](https://twitter.com/intent/tweet?text=Echo+Impostor+%E2%80%94+a+voice-driven+stealth+game+built+with+%40elevenlabsio+for+%23ElevenHacks)
 
 ---
 
